@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+  <mapper namespace="com.MVReservation001.dao.TheaterDao"  >
+	  	<select id="selectTheaterList" resultType="theater">
+	  		SELECT *
+	  		FROM THEATERS
+	  	</select>
+	  	
+	  	<select id="selectTheaterInfo"  parameterType="String" resultType="theater">
+	  		SELECT *
+	  		FROM THEATERS 
+	  		WHERE THCODE = #{thcode}
+	  	</select>
+	  	
+	  	<select id="selectTheaterSchedulesList" parameterType="String"  resultType="com.MVReservation001.dto.ScheduleDto" >
+	  		SELECT TO_CHAR(SCDATE,'YYYY-MM-DD') AS SCDATE
+	  		FROM SCHEDULES
+	  		WHERE SCTHCODE = #{thcode} AND SCDATE > SYSDATE
+	  		GROUP BY TO_CHAR(SCDATE,'YYYY-MM-DD')
+	  	</select>
+	  	
+	  	
+	  	<select id="selectTheaterMovieSchedule" resultType="map">
+	  		SELECT MV.MVCODE, MV.MVTITLE, MV.MVINFO, MV.MVGENRE, TO_CHAR(MV.MVDATE,'YYYY-MM-DD') AS MVDATE,
+                   SC.SCROOM, TO_CHAR(SC.SCDATE,'HH24:MI') AS SCTIME, TO_CHAR(SC.SCDATE,'YYYY-MM-DD') AS SCDATE, SC.SCTHCODE
+	  		FROM SCHEDULES SC
+	  		INNER JOIN MOVIES MV
+	  		ON SC.SCMVCODE = MV.MVCODE
+            WHERE SC.SCTHCODE = #{scthcode} AND TO_CHAR(SC.SCDATE,'YYYY-MM-DD') = #{scdate}
+            	AND SC.SCDATE > SYSDATE
+            ORDER BY MV.MVCODE, SC.SCROOM, TO_CHAR(SC.SCDATE,'HH24:MI')
+	  	</select>
+	  	
+	  	
+	  	
+	  	
+	  	
+  </mapper>

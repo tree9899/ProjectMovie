@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+  <mapper namespace="com.MVReservation001.dao.AdminDao"  >
+	  	
+	  	<select id="selectMembersList"  resultType="member">
+	  		SELECT MID, MPW, MNAME, TO_CHAR(MBIRTH,'YYYY-MM-DD') AS MBIRTH, MADDR, MEMAIL, MPROFILE, MSTATE 
+	  		FROM MEMBERS
+	  	</select>
+	  	
+	  	<update id="updateMemberState">
+	  		UPDATE MEMBERS
+	  		SET 
+	  		<choose>
+	  			<when test="mstate == 1">
+	  				MSTATE = '0'
+	  			</when>
+	  			<when test="mstate == 0">
+	  				MSTATE = '1'
+	  			</when>
+	  			<otherwise>
+	  				MSTATE = '0'
+	  			</otherwise>
+	  		</choose>
+	  		WHERE MID = #{mid}
+	  	</update>
+	  	
+	  	<select id="selectMovieRatio" resultType="map">
+			SELECT MV.*, NVL(REMV.RECOUNT,0) AS RECOUNT
+			FROM MOVIES MV
+			LEFT OUTER JOIN (SELECT REMVCODE, COUNT(*) AS RECOUNT
+					  		 FROM RESERVATION
+					  		 GROUP BY REMVCODE) REMV
+			ON MV.MVCODE = REMV.REMVCODE
+			ORDER BY RECOUNT DESC
+	  	</select>
+	  	
+	  	<select id="selectDetailMemberInfo" resultType="map">
+	  		SELECT * 
+			FROM MEMBERS M
+			LEFT OUTER JOIN (SELECT REMID, COUNT(*) AS RECOUNT FROM RESERVATION GROUP BY REMID ) RE
+			ON M.MID = RE.REMID
+			LEFT OUTER JOIN (SELECT RVMID, COUNT(*) AS RVCOUNT FROM REVIEWS GROUP BY RVMID ) RV
+			ON M.MID = RV.RVMID
+			WHERE MID = #{mid}
+	  	</select>
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+  </mapper>

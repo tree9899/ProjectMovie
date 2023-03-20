@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+  <mapper namespace="com.MVReservation001.dao.MemberDao"  >
+	  	
+	  	<insert id="insertMemberJoin" parameterType="member">
+	  		INSERT INTO MEMBERS(MCODE,MID, MPW, MNAME, MBIRTH, MADDR, MEMAIL, MPROFILE, MSTATE)
+	  		VALUES(#{mcode}, #{mid},#{mpw},#{mname}, TO_DATE(#{mbirth},'YYYY-MM-DD'), #{maddr},#{memail},#{mprofile}, 0 )
+	  	</insert>
+	  	
+	  	<select id="selectMaxMemberCode" resultType="String">
+	  		SELECT MAX(MCODE) FROM MEMBERS
+	  	</select>
+	  	
+	  	<select id="selectMemberLogin" resultType="member">
+	  		SELECT MID, MPROFILE, MSTATE FROM MEMBERS
+	  		WHERE MID = #{mid} AND MPW = #{mpw}
+	  	</select>
+	  	
+	  	<select id="selectReserveList" resultType="map">
+			SELECT RE.RECODE, MV.MVCODE, MV.MVTITLE, MV.MVPOS,TH.THNAME, 
+			       TO_CHAR(RE.REDATE,'YYYY-MM-DD HH24:MI') AS REDATE, RE.REROOM, 
+			       RE.RENUMBER,RV.RVRECODE 
+			FROM RESERVATION RE 
+			INNER JOIN MOVIES MV ON RE.REMVCODE = MV.MVCODE
+			INNER JOIN THEATERS TH ON RE.RETHCODE = TH.THCODE
+			LEFT OUTER JOIN REVIEWS RV ON RE.RECODE = RV.RVRECODE
+			WHERE RE.REMID = #{remid}
+			ORDER BY REDATE DESC
+	  	</select>
+	  	
+	  	<delete id="deleteReserve" parameterType="String">
+	  		DELETE FROM RESERVATION
+	  		WHERE RECODE = #{recode}
+	  	</delete>
+	  	
+	  	<delete id="deletePayInfo" parameterType="String">
+	  		DELETE FROM PAYINFO
+	  		WHERE RECODE = #{recode}
+	  	</delete>	  	
+	  	
+	  	<insert id="insertReview" parameterType="review">
+	  		INSERT INTO REVIEWS(RVRECODE, RVMID, RVCOMMENT, RVRECOMMEND, RVDATE)
+	  		VALUES(#{rvrecode}, #{rvmid}, #{rvcomment}, #{rvrecommend}, SYSDATE)
+	  	</insert>
+	  	
+	  	<select id="selectReview" parameterType="String" resultType="review">
+	  		SELECT RVRECODE, RVMID, RVCOMMENT, RVRECOMMEND, TO_CHAR(RVDATE, 'YYYY-MM-DD') AS RVDATE
+	  		FROM REVIEWS
+	  		WHERE RVRECODE = #{rvrecode}
+	  	</select>
+	  	
+	  	
+  </mapper>

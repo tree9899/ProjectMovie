@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.MVReservation001.dao.MovieDao"  >
+  	<select id="selectMovieList_Rank" resultType="movie" >
+		SELECT MV.MVCODE, MV.MVTITLE, MV.MVDIR, MV.MVACT, MV.MVGENRE, TO_CHAR(MV.MVDATE,'YYYY.MM.DD') AS MVDATE, 
+			   MV.MVPOS, MV.MVINFO, NVL(REMV.RECOUNT,0) AS RECOUNT
+		FROM MOVIES MV
+		LEFT OUTER JOIN (SELECT REMVCODE, SUM(RENUMBER) AS RECOUNT
+		                 FROM RESERVATION
+		                 GROUP BY REMVCODE) REMV
+		ON MV.MVCODE = REMV.REMVCODE
+		ORDER BY NVL(REMV.RECOUNT,0) DESC, MV.MVDATE DESC 
+  	</select>
+  	
+  	<select id="selectTotalRenumber" resultType="int" >
+		SELECT NVL(SUM(RENUMBER),0) FROM RESERVATION  	
+  	</select>
+  	
+  	
+  	<select id="selectMovieInfo" resultType="movie"  parameterType="String" >
+		SELECT MV.MVCODE, MV.MVTITLE, MV.MVDIR, MV.MVACT, MV.MVGENRE, TO_CHAR(MV.MVDATE,'YYYY.MM.DD') AS MVDATE, 
+			   MV.MVPOS, MV.MVINFO, NVL(REMV.RECOUNT,0) AS RECOUNT
+		FROM MOVIES MV
+		LEFT OUTER JOIN (SELECT REMVCODE, SUM(RENUMBER) AS RECOUNT
+		                 FROM RESERVATION
+		                 GROUP BY REMVCODE) REMV
+		ON MV.MVCODE = REMV.REMVCODE
+		WHERE MV.MVCODE = #{mvcode}
+  	
+  	</select>
+  	
+  	<select id="selectReviewList" resultType="map" >
+		SELECT *
+		FROM (SELECT ROWNUM RN, RV.RVMID, RV.RVCOMMENT, RV.RVRECOMMEND, 
+           	  		 TO_CHAR(RV.RVDATE, 'YYYY-MM-DD') AS RVDATE, M.MPROFILE
+      		  FROM REVIEWS RV
+        	  	INNER JOIN RESERVATION RE
+            	  ON RV.RVRECODE = RE.RECODE
+        		INNER JOIN MOVIES MV
+            	  ON RE.REMVCODE = MV.MVCODE
+        		INNER JOIN MEMBERS M
+            	  ON RV.RVMID = M.MID
+      		  WHERE MV.MVCODE = #{mvcode} )
+      	WHERE RN BETWEEN #{startRow} AND #{endRow}
+  	</select>
+  	
+  	<select id="selectReviewCount" resultType="int" >
+		SELECT COUNT(*)
+		FROM REVIEWS RV
+		INNER JOIN RESERVATION RE
+		 ON RV.RVRECODE = RE.RECODE
+		WHERE RE.REMVCODE = #{mvcode}
+  	</select>
+  	
+  	
+  	
+  	
+  	
+  </mapper>
