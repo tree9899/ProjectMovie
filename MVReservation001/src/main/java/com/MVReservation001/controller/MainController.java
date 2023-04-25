@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.MVReservation001.service.MainService;
 import com.MVReservation001.service.MovieService;
@@ -19,15 +20,24 @@ public class MainController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home() {
-		System.out.println("메인페이지 이동 요청");
-		return "home";
+
+	@RequestMapping(value = "/home")
+	public ModelAndView MainForm() {
+		System.out.println("메인페이지 이동 요청1");
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("home");
+		return mav;
 	}
 	
-	@Autowired
-	private MovieService mvsvc;
+	@RequestMapping(value = "/test")
+	public ModelAndView test() {
+		System.out.println("메인페이지 이동 요청1");
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("views/NewFile1");
+		return mav;
+	}
+	
+
 	
 	@Autowired
 	private MainService mainsvc;

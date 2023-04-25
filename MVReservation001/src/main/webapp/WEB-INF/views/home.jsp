@@ -8,7 +8,7 @@
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-<title>MVRESERVATION - 메인페이지</title>
+<title>MVRESERVATION - Main페이지</title>
 <meta content="" name="description">
 <meta content="" name="keywords">
 
@@ -74,14 +74,15 @@
 	<main id="main" class="main">
 
 		<div class="pagetitle">
-			<h1>home.jsp</h1>
+			<h1>신입 개발자 임정은 - 영화예매프로젝트</h1>
 
 		</div>
 		<!-- End Page Title -->
 
 		<section class="section">
 			<div class="row">
-				<div class="col"></div>
+				<div class="col">
+				<h2>dkdk</h2></div>
 			</div>
 		</section>
 
