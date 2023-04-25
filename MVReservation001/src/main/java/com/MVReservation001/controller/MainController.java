@@ -23,20 +23,13 @@ public class MainController {
 
 	@RequestMapping(value = "/")
 	public ModelAndView MainForm() {
-		System.out.println("메인페이지 이동 요청1");
+		System.out.println("메인페이지 이동 요청");
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("home");
 		return mav;
 	}
 	
-	@RequestMapping(value = "/test")
-	public ModelAndView test() {
-		System.out.println("메인페이지 이동 요청1");
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("views/NewFile1");
-		return mav;
-	}
-	
+
 
 	
 	@Autowired
