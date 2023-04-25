@@ -29,8 +29,6 @@ public class MainController {
 		return mav;
 	}
 	
-
-
 	
 	@Autowired
 	private MainService mainsvc;
