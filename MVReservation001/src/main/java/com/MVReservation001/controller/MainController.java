@@ -21,7 +21,7 @@ public class MainController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 
-	@RequestMapping(value = "/home")
+	@RequestMapping(value = "/")
 	public ModelAndView MainForm() {
 		System.out.println("메인페이지 이동 요청1");
 		ModelAndView mav = new ModelAndView();

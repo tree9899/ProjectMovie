@@ -33,14 +33,7 @@ public class MemberController {
 		mav.setViewName("member/MemberJoinForm");
 		return mav;
 	}
-	@RequestMapping(value = "/test")
-	public ModelAndView test() {
-		System.out.println("메인페이지 이동 요청1");
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("views/NewFile1");
-		return mav;
-	}
-	
+
 	@RequestMapping(value = "/memberJoin")
 	public ModelAndView memberJoin(MemberDto joinInfo, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("회원가입 요청");
